@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -14,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.pinktriangle.hussain.process.VLCProcess;
 
 public class RandomFileChooser extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -100,12 +103,17 @@ public class RandomFileChooser extends JFrame {
 				}
 				else
 				{
-					String [] files = new File(folder).list();
+					File [] files = new File(folder).listFiles();
 					int min = 0;
 					int max = files.length - 1;
 					Random random = new Random();
 					int randomNumber = random.nextInt((max - min) + 1) + min;
-					System.out.println(files[randomNumber]);
+					VLCProcess process = new VLCProcess(files[randomNumber]);
+					try {
+						process.playSelectedFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
